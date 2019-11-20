@@ -51,7 +51,7 @@ public class DbFilterTest {
     @Test
     public void testSelectMax() {
         DynamicQuery<Product> query = DynamicQuery.createQuery(Product.class);
-        Optional<BigDecimal> result = productDao.selectMaxByDynamicQuery(Product::getPrice, query);
+        Optional<Integer> result = productDao.selectMaxByDynamicQuery(Product::getProductID, query);
     }
 
     @Test
