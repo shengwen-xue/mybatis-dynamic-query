@@ -1,13 +1,13 @@
 package com.github.wz2cool.dynamic.mybatis.mapper.provider;
 
 import com.github.wz2cool.dynamic.BaseFilterDescriptor;
-import com.github.wz2cool.dynamic.DynamicQuery;
 import com.github.wz2cool.dynamic.BaseSortDescriptor;
+import com.github.wz2cool.dynamic.DynamicQuery;
 import com.github.wz2cool.dynamic.mybatis.ParamExpression;
 import com.github.wz2cool.dynamic.mybatis.QueryHelper;
 import com.github.wz2cool.dynamic.mybatis.mapper.constant.MapperConstants;
-import com.github.wz2cool.dynamic.mybatis.mapper.helper.DynamicQuerySqlHelper;
 import com.github.wz2cool.dynamic.mybatis.mapper.helper.BaseEnhancedMapperTemplate;
+import com.github.wz2cool.dynamic.mybatis.mapper.helper.DynamicQuerySqlHelper;
 import org.apache.ibatis.mapping.MappedStatement;
 import tk.mybatis.mapper.mapperhelper.MapperHelper;
 import tk.mybatis.mapper.mapperhelper.SqlHelper;
@@ -29,6 +29,26 @@ public class DynamicQueryProvider extends BaseEnhancedMapperTemplate {
         StringBuilder sql = new StringBuilder();
         sql.append(DynamicQuerySqlHelper.getBindFilterParams(ms.getConfiguration().isMapUnderscoreToCamelCase()));
         sql.append(SqlHelper.selectCount(entityClass));
+        sql.append(SqlHelper.fromTable(entityClass, tableName(entityClass)));
+        sql.append(DynamicQuerySqlHelper.getWhereClause());
+        return sql.toString();
+    }
+
+    public String selectMaxByDynamicQuery(MappedStatement ms) {
+        Class<?> entityClass = getEntityClass(ms);
+        StringBuilder sql = new StringBuilder();
+        sql.append(DynamicQuerySqlHelper.getBindFilterParams(ms.getConfiguration().isMapUnderscoreToCamelCase()));
+        sql.append(DynamicQuerySqlHelper.getSelectMax());
+        sql.append(SqlHelper.fromTable(entityClass, tableName(entityClass)));
+        sql.append(DynamicQuerySqlHelper.getWhereClause());
+        return sql.toString();
+    }
+
+    public String selectMinByDynamicQuery(MappedStatement ms) {
+        Class<?> entityClass = getEntityClass(ms);
+        StringBuilder sql = new StringBuilder();
+        sql.append(DynamicQuerySqlHelper.getBindFilterParams(ms.getConfiguration().isMapUnderscoreToCamelCase()));
+        sql.append(DynamicQuerySqlHelper.getSelectMin());
         sql.append(SqlHelper.fromTable(entityClass, tableName(entityClass)));
         sql.append(DynamicQuerySqlHelper.getWhereClause());
         return sql.toString();

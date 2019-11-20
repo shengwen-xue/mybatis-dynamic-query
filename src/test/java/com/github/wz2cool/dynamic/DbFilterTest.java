@@ -49,6 +49,12 @@ public class DbFilterTest {
     private ProductDao productDao;
 
     @Test
+    public void testSelectMax() {
+        DynamicQuery<Product> query = DynamicQuery.createQuery(Product.class);
+        Optional<BigDecimal> result = productDao.selectMaxByDynamicQuery(Product::getPrice, query);
+    }
+
+    @Test
     public void testSelectFirst() {
         DynamicQuery<Product> query = DynamicQuery.createQuery(Product.class)
                 .and(Product::getProductID, isEqual(1));

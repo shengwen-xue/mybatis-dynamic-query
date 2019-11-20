@@ -103,7 +103,7 @@ public class QueryHelper {
                 paramMap.put(paramPlaceholder, filterValue);
             }
 
-            String[] paramPlaceholdersArray = paramPlaceholders.toArray(new String[paramPlaceholders.size()]);
+            String[] paramPlaceholdersArray = paramPlaceholders.toArray(new String[0]);
             expression = generateFilterExpression(entityClass, filterDescriptor, paramPlaceholdersArray);
         } else {
             String paramPlaceholder;
@@ -281,6 +281,11 @@ public class QueryHelper {
         return String.join(", ", columns);
     }
 
+    public String getQueryColumnByProperty(final Class entityClass, final String propertyName) {
+        ColumnInfo columnInfo = entityCache.getColumnInfo(entityClass, propertyName);
+        return columnInfo.getQueryColumn();
+    }
+
     String toAllColumnsExpression(final Class entityClass) {
         ColumnInfo[] columnInfos = entityCache.getColumnInfos(entityClass);
         List<String> columns = new ArrayList<>();
@@ -293,7 +298,7 @@ public class QueryHelper {
         return String.join(", ", columns);
     }
 
-    ColumnInfo getColumnInfo(final Class entityClass, final String propertyName) {
+    public ColumnInfo getColumnInfo(final Class entityClass, final String propertyName) {
         return entityCache.getColumnInfo(entityClass, propertyName);
     }
 
