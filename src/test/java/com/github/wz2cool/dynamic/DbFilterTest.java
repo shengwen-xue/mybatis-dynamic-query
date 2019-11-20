@@ -49,9 +49,27 @@ public class DbFilterTest {
     private ProductDao productDao;
 
     @Test
+    public void testSelectMin() {
+        DynamicQuery<Product> query = DynamicQuery.createQuery(Product.class);
+        Optional<Integer> result = productDao.selectMinByDynamicQuery(Product::getProductID, query);
+        Assert.assertTrue(result.isPresent());
+
+        DynamicQuery<Product> query1 = DynamicQuery.createQuery(Product.class)
+                .and(Product::getProductID, lessThan(Integer.MIN_VALUE));
+        Optional<Integer> result1 = productDao.selectMinByDynamicQuery(Product::getProductID, query1);
+        Assert.assertFalse(result1.isPresent());
+    }
+
+    @Test
     public void testSelectMax() {
         DynamicQuery<Product> query = DynamicQuery.createQuery(Product.class);
         Optional<Integer> result = productDao.selectMaxByDynamicQuery(Product::getProductID, query);
+        Assert.assertTrue(result.isPresent());
+
+        DynamicQuery<Product> query1 = DynamicQuery.createQuery(Product.class)
+                .and(Product::getProductID, greaterThan(Integer.MAX_VALUE));
+        Optional<Integer> result1 = productDao.selectMaxByDynamicQuery(Product::getProductID, query1);
+        Assert.assertFalse(result1.isPresent());
     }
 
     @Test
